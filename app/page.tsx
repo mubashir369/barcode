@@ -20,6 +20,16 @@ interface Stock {
 const money = (n: number) =>
   n.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
+const BRANCH_CODE = "15";
+const BARCODE_LENGTH = 10;
+
+// "001" -> "1500000001". Full 10-digit (or longer / non-numeric) codes are left untouched.
+function normalizeBarcode(raw: string): string {
+  const code = raw.trim();
+  if (!/^\d+$/.test(code) || code.length >= BARCODE_LENGTH) return code;
+  return BRANCH_CODE + code.padStart(BARCODE_LENGTH - BRANCH_CODE.length, "0");
+}
+
 export default function Home() {
   const barcodeRef = useRef<HTMLInputElement>(null);
   const offerRef = useRef<HTMLInputElement>(null);
@@ -43,8 +53,9 @@ export default function Home() {
 
   async function lookup(e: FormEvent) {
     e.preventDefault();
-    const code = barcode.trim();
+    const code = normalizeBarcode(barcode);
     if (!code) return;
+    setBarcode(code); // show the full barcode in the box
     setLoading(true);
     setError("");
     setNotice("");
@@ -218,7 +229,8 @@ export default function Home() {
               ref={barcodeRef}
               value={barcode}
               onChange={(e) => setBarcode(e.target.value)}
-              placeholder="Scan or type barcode"
+              onBlur={() => setBarcode((b) => normalizeBarcode(b))}
+              placeholder="Scan, or type last digits (e.g. 001)"
               autoComplete="off"
               className="flex-1 rounded-lg border border-slate-300 bg-white px-4 py-3 text-lg outline-none focus:border-indigo-600 focus:ring-2 focus:ring-indigo-200"
             />

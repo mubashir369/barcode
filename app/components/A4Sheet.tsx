@@ -106,6 +106,7 @@ export interface BatchEntry {
     brand: string;
     itemGroup: string;
     sellingPrice: number;
+    purchasePrice?: number;
   };
   offerPrice: number;
   savedAmount: number;
