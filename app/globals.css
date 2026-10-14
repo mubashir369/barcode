@@ -24,3 +24,24 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+@media print {
+  /* 1. Hide default browser headers, footers (IP, date, time), and force zero page margin */
+  @page {
+    margin: 0;
+    size: A4 portrait;
+  }
+
+  /* 2. Hide everything in body except the printable print container */
+  body {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: white !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* 3. Ensure screen elements stay hidden */
+  .print\:hidden {
+    display: none !important;
+  }
+}
