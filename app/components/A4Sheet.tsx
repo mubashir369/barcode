@@ -74,7 +74,7 @@ export const A4_SETTINGS: A4Settings = {
       show: true,
     },
     {
-      text: "MRP: {mrp}",
+      text: "₹: {mrp}",
       fontSizePt: 8,
       align: "center",
       marginTopMm: 1,
